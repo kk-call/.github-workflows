@@ -20,7 +20,7 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Build project
-        run: dotnet build C:/Users/2397593/tcp/Traceability.sln /p:Configuration=Release
+        run: MSBuild C:/Users/2397593/tcp/Traceability.sln /p:Configuration=Release
 
       - name: Install Fortify on Demand CLI
         run: |
