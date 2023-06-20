@@ -1,0 +1,48 @@
+ 
+name: Fortify on Demand Integration
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  fortify-on-demand:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup MSBuild
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Build project
+        run: dotnet build YourProject.sln --configuration Release
+
+      - name: Install Fortify on Demand CLI
+        run: |
+          curl -LO https://github.com/fortify/fortify-cli/releases/latest/download/fortify-cli-win-latest.zip
+          Expand-Archive -Path fortify-cli-win-latest.zip -DestinationPath .\fortify-cli
+
+      - name: Upload code to Fortify on Demand
+        run: |
+          .\fortify-cli\fortifycli upload -url <FOD_API_URL> -authtoken <FOD_API_TOKEN> -project <FOD_PROJECT_NAME> -files ./path/to/your/code
+
+      - name: Wait for Fortify on Demand scan to complete
+        run: |
+          .\fortify-cli\fortifycli wait -url <FOD_API_URL> -authtoken <FOD_API_TOKEN> -project <FOD_PROJECT_NAME>
+
+      - name: Download Fortify on Demand scan results
+        run: |
+          .\fortify-cli\fortifycli download -url <FOD_API_URL> -authtoken <FOD_API_TOKEN> -project <FOD_PROJECT_NAME> -output ./scan-results
+
+      # Add steps to process and analyze the scan results as needed
+
+      - name: Publish Fortify on Demand report
+        uses: actions/upload-artifact@v2
+        with:
+          name: FortifyScanResults
+          path: ./scan-results
