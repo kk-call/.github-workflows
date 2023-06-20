@@ -15,10 +15,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup MSBuild
-        uses: actions/setup-dotnet@v1
+        uses: microsoft/setup-msbuild@v1.2
         with:
-          dotnet-version: 6.0.x
-
+         vs-version: 'latest'
+         msbuild-architecture: x86
       - name: Build project
         run: MSBuild C:/Users/2397593/tcp/Traceability.sln /p:Configuration=Release
 
