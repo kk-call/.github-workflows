@@ -43,7 +43,7 @@ jobs:
 
       # Java is required to run the various Fortify utilities.
       # When scanning a Java application, please use the appropriate Java version for building your application.
-      - name: Setup Java
+      - name: Setup msbuild
         uses: microsoft/setup-msbuild@v1.2
         with:
           vs-version: 'latest'
