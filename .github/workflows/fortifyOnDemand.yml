@@ -7,7 +7,7 @@ name: FoD scan
 
 jobs:
   FoD-SAST-Scan-And-Import:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Check Out Source Code
@@ -23,7 +23,7 @@ jobs:
         with:
           version: 21.2.0
       - name: Package Code + Dependencies
-        run: scancentral package -bt gradle -o package.zip
+        run: scancentral package -bt msbuild -o package.zip
       
       - name: Download Fortify on Demand Universal CI Tool
         uses: fortify/gha-setup-fod-uploader@v1
